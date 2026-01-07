@@ -1,0 +1,7 @@
+{
+    "typeCheckingMode": "standard",
+    "reportMissingImports": "error",
+    "reportUnknownArgumentType": "information",
+    "reportArgumentType": "information",
+    "ignore": ["**/__pycache__", "**/.mypy_cache", "**/.pytest_cache"]
+}

@@ -1,0 +1,18 @@
+[project]
+name = "book-queue"
+version = "0.1.0"
+description = "Back-end for techinical books summary"
+authors = [
+    {name = "David Aderaldo",email = "davidade.dev@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+]
+
+[tool.poetry]
+packages = [{include = "book_queue", from = "src"}]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
