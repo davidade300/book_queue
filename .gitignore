@@ -1,4 +1,6 @@
 **/__pycache__
 **/.pytest_cache
 config.py
-/.env
+.env
+.idea
+**/*.drawio
