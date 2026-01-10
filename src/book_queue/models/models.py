@@ -1,7 +1,6 @@
 from sqlalchemy import ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, registry, relationship
 
-# TODO: update  de class diagram to include id and title for notes,check relationships
 reg = registry()
 
 
@@ -42,7 +41,7 @@ class Chapter:
     book_id: Mapped[int] = mapped_column(
         ForeignKey('books.id'), nullable=False, init=False
     )
-    book: Mapped[Book] = relationship(back_populates='chapters', init=False)
+    book: Mapped[Book] = relationship(back_populates='chapters')
     notes: Mapped[list['Note']] = relationship(
         back_populates='chapter',
         default_factory=list,
@@ -62,4 +61,4 @@ class Note:
     chapter_id: Mapped[int] = mapped_column(
         ForeignKey('chapters.id'), nullable=False, init=False
     )
-    chapter: Mapped[Book] = relationship(Book, back_populates='notes')
+    chapter: Mapped[Chapter] = relationship(back_populates='notes')

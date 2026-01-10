@@ -3,19 +3,24 @@ name = "book-queue"
 version = "0.1.0"
 description = "Back-end for techinical books summary"
 authors = [
-    {name = "David Aderaldo",email = "davidade.dev@gmail.com"}
+    { name = "David Aderaldo", email = "davidade.dev@gmail.com" }
 ]
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "sqlalchemy (>=2.0.45,<3.0.0)",
     "pytest (>=9.0.2,<10.0.0)",
-    "pytest-html (>=4.1.1,<5.0.0)"
+    "pytest-html (>=4.1.1,<5.0.0)",
+    "ruff (>=0.14.10,<0.15.0)"
 ]
 
 [tool.poetry]
-packages = [{include = "book_queue", from = "src"}]
+packages = [{ include = "book_queue", from = "src" }]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 80
+format.quote-style = "single"
