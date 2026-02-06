@@ -1,64 +1,79 @@
-from sqlalchemy import ForeignKey, Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column, registry, relationship
+from datetime import datetime
 
-reg = registry()
+from sqlalchemy import TIMESTAMP, ForeignKey, Integer, String, Text
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
-@reg.mapped_as_dataclass
-class Book:
+class Base(DeclarativeBase):
+    pass
+
+
+class Book(Base):
     __tablename__ = 'books'
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, autoincrement=True, init=False
+        Integer, primary_key=True, autoincrement=True,     )
+    title: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
     )
-    title: Mapped[str] = mapped_column(String(255), nullable=False, hash=True)
     author: Mapped[str] = mapped_column(String(255), nullable=False)
     edition: Mapped[int] = mapped_column(Integer)
-    release_year: Mapped[int] = mapped_column(Integer, nullable=False)
+    release_date: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=False)
     publisher: Mapped[str] = mapped_column(
-        String(255), nullable=False, hash=True
+        String(255),
+        nullable=False,
     )
-    isbn: Mapped[int] = mapped_column(
-        Integer, nullable=False, hash=True, unique=True
-    )
+    isbn_10: Mapped[str] = mapped_column(String(255), unique=True)
+    isbn_13: Mapped[str] = mapped_column(String(255), unique=True)
     cover_img_url: Mapped[str] = mapped_column(String(255), nullable=False)
     chapters: Mapped[list['Chapter']] = relationship(
         back_populates='book',
-        default_factory=list,
+
         cascade='all, delete-orphan',
     )
 
 
-@reg.mapped_as_dataclass
-class Chapter:
+class Chapter(Base):
     __tablename__ = 'chapters'
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, autoincrement=True, init=False, hash=True
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+
     )
-    title: Mapped[str] = mapped_column(String(255), nullable=False, hash=True)
-    summary: Mapped[str] = mapped_column(Text, nullable=False)
+    title: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+    )
+    summary: Mapped[str] = mapped_column(
+        Text, default='Not finished/ não finalizado'
+    )
     book_id: Mapped[int] = mapped_column(
-        ForeignKey('books.id'), nullable=False, init=False
-    )
+        ForeignKey('books.id'), nullable=False,     )
     book: Mapped[Book] = relationship(back_populates='chapters')
     notes: Mapped[list['Note']] = relationship(
         back_populates='chapter',
-        default_factory=list,
+
         cascade='all, delete-orphan',
     )
 
 
-@reg.mapped_as_dataclass
-class Note:
+class Note(Base):
     __tablename__ = 'notes'
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, autoincrement=True, init=False, hash=True
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+
     )
-    title: Mapped[str] = mapped_column(String(255), nullable=False, hash=True)
+    title: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+    )
     content: Mapped[str] = mapped_column(Text, nullable=False)
     chapter_id: Mapped[int] = mapped_column(
-        ForeignKey('chapters.id'), nullable=False, init=False
-    )
+        ForeignKey('chapters.id'), nullable=False,     )
     chapter: Mapped[Chapter] = relationship(back_populates='notes')
