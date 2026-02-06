@@ -11,7 +11,10 @@ dependencies = [
     "sqlalchemy (>=2.0.45,<3.0.0)",
     "pytest (>=9.0.2,<10.0.0)",
     "pytest-html (>=4.1.1,<5.0.0)",
-    "ruff (>=0.14.10,<0.15.0)"
+    "ruff (>=0.14.10,<0.15.0)",
+    "fastapi[standard] (>=0.128.3,<0.129.0)",
+    "basedpyright (>=1.37.4,<2.0.0)",
+    "pytest-cov (>=7.0.0,<8.0.0)"
 ]
 
 [tool.poetry]
