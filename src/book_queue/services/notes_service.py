@@ -1,6 +1,5 @@
 from sqlalchemy import (
     Insert,
-    Select,
     Update,
     insert,
     select,
@@ -8,7 +7,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Session
 
-from book_queue.models.models import Note
+from book_queue.models.models import Chapter, Note
 from book_queue.schemas import CreateNoteRequest, UpdateNoteRequest
 
 
@@ -17,6 +16,11 @@ class NoteService:
         self.db = db
 
     def create(self, data: CreateNoteRequest) -> Note:
+        """
+        Create a new note from a CreateNoteRequest BaseModel.
+        :param data: object of CreateNoteRequest type
+        :return: note:Note
+        """
         try:
             stmt: Insert = (
                 insert(Note)
@@ -35,7 +39,28 @@ class NoteService:
         except Exception:
             raise Exception('Ops something went wrong')
 
+    def get_by_id(self, note_id: int) -> Note:
+        """
+        return a note by it's id
+        :param note_id: int representin the id of the searched note
+        :return: note:Note
+        """
+        stmt = select(Note).where(Note.id == note_id)
+        note = self.db.execute(stmt).scalar_one()
+
+        if not note:
+            raise Exception(f'Note with id {note_id} not found')
+
+        return note
+
     def update(self, note_id: int, data: UpdateNoteRequest) -> Note:
+        """
+        update a note by it's id, dumping a updateNoteRequest object data in the note
+        of said id
+        :param note_id: int representing the id of the note to update
+        :param data: UpdateNoteRequest object data
+        :return: note:Note
+        """
         try:
             update_data: dict[str, str] = data.model_dump(
                 exclude_none=True, exclude_unset=True
@@ -46,7 +71,7 @@ class NoteService:
 
             stmt: Update = (
                 update(Note).where(Note.id == note_id).values(**update_data)
-            )
+            ).returning(Note)
 
             note: Note = self.db.execute(stmt).scalar_one()
             self.db.commit()
@@ -56,11 +81,12 @@ class NoteService:
             raise Exception(f'Note with id {note_id} not found')
 
     def delete(self, note_id: int) -> bool:
-        stmt = select(Note).where(Note.id == note_id)
-        note = self.db.execute(stmt).scalar()
-
-        if not note:
-            raise Exception(f'Note with id {note_id} not found')
+        """
+        Delete a note by it's id
+        :param note_id:
+        :return: boolean or raises get_by_id function exception
+        """
+        note = self.get_by_id(note_id)
 
         self.db.delete(note)
         self.db.commit()
@@ -68,11 +94,29 @@ class NoteService:
         return True
 
     def list_by_chapter_id(self, chapter_id: int) -> list[Note]:
+        """
+        list a chapter's notes
+        :param chapter_id: id of the chapter to list it's notes
+        :return: list of notes
+        """
         stmt = select(Note).where(Note.chapter_id == chapter_id)
         notes: list[Note] = list[Note](self.db.execute(stmt).scalars().all())
 
         return notes
 
     def list_by_book_id(self, book_id: int) -> list[Note]:
-        ...
-        # TODO: implement method
+        """
+        list a book notes by the book id
+        :param book_id: id of the book to list it's notes
+        :return: a list of notes
+        """
+        stmt = (
+            select(Note)
+            .join(Chapter)
+            .where(Chapter.book_id == book_id)
+            .order_by(Note.created_at.desc())
+        )
+
+        notes: list[Note] = list[Note](self.db.execute(stmt).scalars().all())
+
+        return notes
