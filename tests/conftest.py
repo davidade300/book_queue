@@ -6,7 +6,7 @@ from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 
 from book_queue.models.models import Base, Book, Chapter, Note
-from book_queue.models.settings import Settings
+from book_queue.settings import Settings
 
 
 @pytest.fixture(scope='function')
@@ -26,13 +26,13 @@ def db_session() -> Generator[Session]:
 
 @pytest.fixture(scope='function')
 def instantiate_models_and_populate_db(
-    db_session:Session,
+    db_session: Session,
 ) -> tuple[Book, Chapter, Chapter, Note, Note]:
     book: Book = Book(
         title='Test Book',
         author='Test Author',
         edition=1,
-        release_date=datetime(2026,6,2),
+        release_date=datetime(2026, 6, 2),
         publisher='Test Publisher',
         isbn_10='0-321-12742-0',
         isbn_13='978-0-321-12742-6',
@@ -66,6 +66,5 @@ def instantiate_models_and_populate_db(
     db_session.add(instance=book)
 
     db_session.commit()
-
 
     return book, chapter_1, chapter_2, note_1, note_2

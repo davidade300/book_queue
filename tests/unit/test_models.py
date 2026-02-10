@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import pytest
-
 
 def test_book_instatiation_sets_necessary_fields(
     instantiate_models_and_populate_db,
