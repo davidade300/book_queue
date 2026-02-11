@@ -31,7 +31,7 @@ def test_delete_note(note_service, instantiate_models_and_populate_db):
     _, _, _, n1, _ = instantiate_models_and_populate_db
 
     deleted_note: Note = note_service.delete(n1.id)
-    assert deleted_note
+    assert deleted_note is None
 
 
 def test_update_note(note_service, instantiate_models_and_populate_db):

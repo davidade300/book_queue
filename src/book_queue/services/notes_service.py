@@ -21,23 +21,21 @@ class NoteService:
         :param data: object of CreateNoteRequest type
         :return: note:Note
         """
-        try:
-            stmt: Insert = (
-                insert(Note)
-                .values(
-                    title=data.title.title().strip(),
-                    content=data.content,
-                    chapter_id=data.chapter_id,
-                )
-                .returning(Note)
+
+        stmt: Insert = (
+            insert(Note)
+            .values(
+                title=data.title.title().strip(),
+                content=data.content,
+                chapter_id=data.chapter_id,
             )
+            .returning(Note)
+        )
 
-            note: Note = self.db.execute(stmt).scalar_one()
-            self.db.commit()
+        note: Note = self.db.execute(stmt).scalar_one()
+        self.db.commit()
 
-            return note
-        except Exception:
-            raise Exception('Ops something went wrong')
+        return note
 
     def get_by_id(self, note_id: int) -> Note:
         """
@@ -47,9 +45,6 @@ class NoteService:
         """
         stmt = select(Note).where(Note.id == note_id)
         note = self.db.execute(stmt).scalar_one()
-
-        if not note:
-            raise Exception(f'Note with id {note_id} not found')
 
         return note
 
@@ -61,26 +56,23 @@ class NoteService:
         :param data: UpdateNoteRequest object data
         :return: note:Note
         """
-        try:
-            update_data: dict[str, str] = data.model_dump(
-                exclude_none=True, exclude_unset=True
-            )
+        update_data: dict[str, str] = data.model_dump(
+            exclude_none=True, exclude_unset=True
+        )
 
-            if data.title:
-                update_data['title'] = data.title.title().strip()
+        if data.title:
+            update_data['title'] = data.title.title().strip()
 
-            stmt: Update = (
-                update(Note).where(Note.id == note_id).values(**update_data)
-            ).returning(Note)
+        stmt: Update = (
+            update(Note).where(Note.id == note_id).values(**update_data)
+        ).returning(Note)
 
-            note: Note = self.db.execute(stmt).scalar_one()
-            self.db.commit()
+        note: Note = self.db.execute(stmt).scalar_one()
+        self.db.commit()
 
-            return note
-        except Exception:
-            raise Exception(f'Note with id {note_id} not found')
+        return note
 
-    def delete(self, note_id: int) -> bool:
+    def delete(self, note_id: int) -> None:
         """
         Delete a note by it's id
         :param note_id:
@@ -91,7 +83,6 @@ class NoteService:
         self.db.delete(note)
         self.db.commit()
 
-        return True
 
     def list_by_chapter_id(self, chapter_id: int) -> list[Note]:
         """

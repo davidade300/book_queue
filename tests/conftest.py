@@ -6,6 +6,7 @@ from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 
 from book_queue.models.models import Base, Book, Chapter, Note
+from book_queue.services.chapter_service import ChapterService
 from book_queue.services.notes_service import NoteService
 from book_queue.settings import Settings
 
@@ -74,3 +75,8 @@ def instantiate_models_and_populate_db(
 @pytest.fixture
 def note_service(db_session):
     return NoteService(db=db_session)
+
+
+@pytest.fixture
+def chapter_service(db_session):
+    return ChapterService(db=db_session)
