@@ -10,15 +10,7 @@ class ChapterService:
         self.db: Session = db
 
     def create(self, data: CreateChapterRequest) -> Chapter:
-        stmt = (
-            insert(Chapter)
-            .values(
-                title=data.title.strip().title(),
-                summary=data.summary,
-                book_id=data.book_id,
-            )
-            .returning(Chapter)
-        )
+        stmt = insert(Chapter).values(**data.model_dump()).returning(Chapter)
 
         chapter: Chapter = self.db.execute(stmt).scalar_one()
         self.db.commit()
@@ -30,6 +22,7 @@ class ChapterService:
         chapter: Chapter = self.db.execute(stmt).scalar_one()
 
         return chapter
+
 
     def list_chapters(self) -> list[Chapter]:
         stmt = select(Chapter).order_by(Chapter.created_at.desc())
@@ -43,9 +36,7 @@ class ChapterService:
         stmt: Update = (
             update(Chapter)
             .where(Chapter.id == chapter_id)
-            .values(
-                summary=data.summary,
-            )
+            .values(**data.model_dump())
             .returning(Chapter)
         )
 

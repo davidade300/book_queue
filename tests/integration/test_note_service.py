@@ -13,7 +13,7 @@ def test_create_note(note_service, instantiate_models_and_populate_db):
 
     note: Note = note_service.create(note_request)
 
-    assert note.title == 'Title'
+    assert note.title == 'title'
     assert note.content == 'content'
     assert note.chapter_id == c1.id
 

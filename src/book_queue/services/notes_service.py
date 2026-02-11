@@ -25,9 +25,7 @@ class NoteService:
         stmt: Insert = (
             insert(Note)
             .values(
-                title=data.title.title().strip(),
-                content=data.content,
-                chapter_id=data.chapter_id,
+                **data.model_dump(),
             )
             .returning(Note)
         )
@@ -82,7 +80,6 @@ class NoteService:
 
         self.db.delete(note)
         self.db.commit()
-
 
     def list_by_chapter_id(self, chapter_id: int) -> list[Note]:
         """
