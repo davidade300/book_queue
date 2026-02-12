@@ -60,7 +60,7 @@ def test_list_by_book_id(note_service, instantiate_models_and_populate_db):
 
     notes_list: list[Note] = note_service.list_by_book_id(b1.id)
 
-    assert len(notes_list) ==2
+    assert len(notes_list) == 2
     assert notes_list[0].id == n1.id
     assert notes_list[1].id == n2.id
     assert c1.notes[0] == n1
