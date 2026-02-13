@@ -6,6 +6,7 @@ from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
 
+from book_queue.core.dependencies import db_dependecy
 from book_queue.core.settings import Settings
 from book_queue.main import app
 from book_queue.models.models import Base, Book, Chapter, Note
@@ -92,6 +93,13 @@ def book_service(db_session):
 
 @pytest.fixture(scope='function')
 def test_client() -> TestClient:
-    test_app = TestClient(app)
 
-    return test_app
+    def override_get_db():
+        try:
+            yield db_session
+        finally:
+            pass
+
+        app.dependency_overrides[db_dependecy] = override_get_db
+
+    return TestClient(app)

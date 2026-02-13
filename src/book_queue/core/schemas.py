@@ -71,10 +71,10 @@ class BookResponse(BaseModel):
     publisher: str
     isbn_10: str | None = None
     isbn_13: str | None = None
-    cover_image_url: str
+    cover_img_url: str
     chapters: list[ChapterResponse] | None = None
     created_at: datetime
-    last_updated_at: datetime
+    last_updated_at: datetime | None = None
 
     model_config = ConfigDict(
         from_attributes=True,
