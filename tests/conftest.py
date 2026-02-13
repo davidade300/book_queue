@@ -4,8 +4,10 @@ from typing import Generator
 import pytest
 from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
+from starlette.testclient import TestClient
 
 from book_queue.core.settings import Settings
+from book_queue.main import app
 from book_queue.models.models import Base, Book, Chapter, Note
 from book_queue.services.book_service import BookService
 from book_queue.services.chapter_service import ChapterService
@@ -74,7 +76,7 @@ def instantiate_models_and_populate_db(
 
 
 @pytest.fixture(scope='function')
-def note_service(db_session)  :
+def note_service(db_session):
     return NoteService(db=db_session)
 
 
@@ -86,3 +88,10 @@ def chapter_service(db_session):
 @pytest.fixture(scope='function')
 def book_service(db_session):
     return BookService(db=db_session)
+
+
+@pytest.fixture(scope='function')
+def test_client() -> TestClient:
+    test_app = TestClient(app)
+
+    return test_app
