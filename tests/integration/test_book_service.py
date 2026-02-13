@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from book_queue.models.models import Book
-from book_queue.schemas import CreateBookRequest
+from book_queue.core.schemas import CreateBookRequest
 
 
 def test_create_book(

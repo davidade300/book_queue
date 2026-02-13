@@ -1,12 +1,7 @@
 from sqlalchemy import Engine, create_engine
-from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
-from book_queue.settings import Settings
-
-
-class Base(DeclarativeBase):
-    pass
-
+from book_queue.core.settings import Settings
 
 engine: Engine = create_engine(
     url=Settings.DATABASE_URL,

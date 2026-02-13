@@ -8,7 +8,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Session
 
 from book_queue.models.models import Chapter, Note
-from book_queue.schemas import CreateNoteRequest, UpdateNoteRequest
+from book_queue.core.schemas import CreateNoteRequest, UpdateNoteRequest
 
 
 class NoteService:

@@ -2,7 +2,7 @@ from sqlalchemy import insert, select
 from sqlalchemy.orm import Session
 
 from book_queue.models.models import Book
-from book_queue.schemas import CreateBookRequest
+from book_queue.core.schemas import CreateBookRequest
 
 
 class BookService:

@@ -1,5 +1,5 @@
 from book_queue.models.models import Note
-from book_queue.schemas import CreateNoteRequest, UpdateNoteRequest
+from book_queue.core.schemas import CreateNoteRequest, UpdateNoteRequest
 
 
 def test_create_note(note_service, instantiate_models_and_populate_db):

@@ -1,5 +1,5 @@
 from book_queue.models.models import Chapter
-from book_queue.schemas import CreateChapterRequest, UpdateChapterRequest
+from book_queue.core.schemas import CreateChapterRequest, UpdateChapterRequest
 
 
 def test_create_chapter(chapter_service, instantiate_models_and_populate_db):

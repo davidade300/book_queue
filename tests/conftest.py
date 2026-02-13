@@ -5,11 +5,11 @@ import pytest
 from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 
+from book_queue.core.settings import Settings
 from book_queue.models.models import Base, Book, Chapter, Note
 from book_queue.services.book_service import BookService
 from book_queue.services.chapter_service import ChapterService
 from book_queue.services.notes_service import NoteService
-from book_queue.settings import Settings
 
 
 @pytest.fixture(scope='function')
@@ -73,16 +73,16 @@ def instantiate_models_and_populate_db(
     return book, chapter_1, chapter_2, note_1, note_2
 
 
-@pytest.fixture
-def note_service(db_session):
+@pytest.fixture(scope='function')
+def note_service(db_session)  :
     return NoteService(db=db_session)
 
 
-@pytest.fixture
+@pytest.fixture(scope='function')
 def chapter_service(db_session):
     return ChapterService(db=db_session)
 
 
-@pytest.fixture
+@pytest.fixture(scope='function')
 def book_service(db_session):
     return BookService(db=db_session)

@@ -1,9 +1,11 @@
 from datetime import datetime
 
 from sqlalchemy import TIMESTAMP, ForeignKey, Integer, String, Text, func
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, DeclarativeBase
 
-from book_queue.database import Base
+
+class Base(DeclarativeBase):
+    pass
 
 
 class Book(Base):
