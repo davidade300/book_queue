@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from book_queue.core.database import get_db
 from book_queue.core.schemas import BookResponse, CreateBookRequest
 from book_queue.models.models import Book
 from book_queue.services.book_service import BookService
@@ -17,7 +18,12 @@ def test_create_book(test_client):
         isbn_13='0123456789123',
     )
     response = test_client.post('/books', json=new_book.model_dump(mode='json'))
+    json_book: BookResponse = BookResponse.model_validate(response.json())
+
     assert response.status_code == 201
+    assert json_book.title == 'Test'
+    assert json_book.author == 'Test Author'
+    assert json_book.id == 1
 
 
 def test_get_book_by_id(test_client, db_session):

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Generator
 
 import pytest
-from sqlalchemy import Connection, Engine, create_engine
+from sqlalchemy import Connection, Engine, StaticPool, create_engine
 from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
 
@@ -17,7 +17,10 @@ from book_queue.services.notes_service import NoteService
 
 @pytest.fixture(scope='function')
 def db_session() -> Generator[Session]:
-    engine: Engine = create_engine(url=Settings.TEST_DATABASE_URL)
+    engine: Engine = create_engine(
+        url=Settings.TEST_DATABASE_URL,
+        connect_args={'check_same_thread': False},
+    )
     Base.metadata.create_all(engine)
     connection: Connection = engine.connect()
     session: Session = Session(bind=connection)
@@ -92,15 +95,17 @@ def book_service(db_session):
 
 
 @pytest.fixture(scope='function')
-def test_client() -> TestClient:
-#TODO: check for endpoint and tests using different dbs
-# maybe using an real db and dropping it after tests resolve the issue
+def test_client(db_session: Session):
     def override_get_db():
         try:
             yield db_session
         finally:
             pass
 
-        app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_db] = override_get_db
 
-    return TestClient(app)
+    client = TestClient(app)
+
+    yield client
+
+    app.dependency_overrides.clear()
