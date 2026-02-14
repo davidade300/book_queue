@@ -6,7 +6,7 @@ from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
 
-from book_queue.core.dependencies import db_dependecy
+from book_queue.core.database import get_db
 from book_queue.core.settings import Settings
 from book_queue.main import app
 from book_queue.models.models import Base, Book, Chapter, Note
@@ -93,13 +93,14 @@ def book_service(db_session):
 
 @pytest.fixture(scope='function')
 def test_client() -> TestClient:
-
+#TODO: check for endpoint and tests using different dbs
+# maybe using an real db and dropping it after tests resolve the issue
     def override_get_db():
         try:
             yield db_session
         finally:
             pass
 
-        app.dependency_overrides[db_dependecy] = override_get_db
+        app.dependency_overrides[get_db] = override_get_db
 
     return TestClient(app)

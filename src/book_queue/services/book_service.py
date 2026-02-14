@@ -29,7 +29,6 @@ class BookService:
     def get_by_id(self, book_id: int) -> Book:
         stmt = select(Book).where(Book.id == book_id)
         book: Book = self.db.execute(stmt).scalar_one()
-        self.db.commit()
 
         return book
 
@@ -44,3 +43,5 @@ class BookService:
 
         self.db.delete(book)
         self.db.commit()
+
+

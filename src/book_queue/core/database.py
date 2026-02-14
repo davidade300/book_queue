@@ -18,7 +18,9 @@ SessionLocal = sessionmaker(
 
 def get_db():
     db: Session = SessionLocal()
-    Base.metadata.create_all(engine) #TODO: Fix this for tests with a override get_db
+    Base.metadata.create_all(
+        engine
+    )  # TODO: Fix this for tests with a override get_db
     try:
         yield db
     finally:
