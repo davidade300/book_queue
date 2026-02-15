@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
 
 from book_queue.core.dependencies import get_db
+from book_queue.core.schemas import CreateBookRequest
 from book_queue.core.settings import Settings
 from book_queue.main import app
 from book_queue.models.models import Base, Book, Chapter, Note
@@ -80,23 +81,8 @@ def instantiate_models_and_populate_db(
 
 
 @pytest.fixture(scope='function')
-def note_service(db_session):
-    return NoteService(db=db_session)
-
-
-@pytest.fixture(scope='function')
-def chapter_service(db_session):
-    return ChapterService(db=db_session)
-
-
-@pytest.fixture(scope='function')
-def book_service(db_session):
-    return BookService(db=db_session)
-
-
-@pytest.fixture(scope='function')
-def test_client(db_session: Session):
-    def override_get_db():
+def test_client(db_session: Session) -> Generator[TestClient]:
+    def override_get_db() -> Generator[Session]:
         try:
             yield db_session
         finally:
@@ -109,3 +95,18 @@ def test_client(db_session: Session):
     yield client
 
     app.dependency_overrides.clear()
+
+
+@pytest.fixture(scope='function')
+def book_request():
+    new_book: CreateBookRequest = CreateBookRequest(
+        title='Test',
+        author='Test Author',
+        edition=1,
+        release_date=datetime(2020, 1, 1),
+        publisher='Test Publisher',
+        cover_img_url='http://cover.jpg',
+        isbn_10='0123456789',
+        isbn_13='0123456789123',
+    )
+    return new_book
