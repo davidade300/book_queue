@@ -1,4 +1,3 @@
-
 from sqlalchemy.orm import Session
 
 from book_queue.core.schemas import (
@@ -48,3 +47,13 @@ def test_list_books(
     assert response.status_code == 200
     assert len(json_books.books) == 1
     assert json_books.books[0] == BookResponse.model_validate(book)
+
+
+def test_delete_book(
+    test_client, db_session: Session, book_request: CreateBookRequest
+):
+    book: Book = BookService(db_session).create(book_request)
+
+    response = test_client.delete(f'/books/delete/{book.id}')
+
+    assert response.status_code == 204

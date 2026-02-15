@@ -52,3 +52,9 @@ def list_books(db: Session = Depends(get_db)) -> BookResponseList:
     result: BookResponseList = BookResponseList(books=book_list)
 
     return result
+
+
+@router.delete('/delete/{book_id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_book(book_id: int, db: Session = Depends(get_db)) -> None:
+    book_service: BookService = BookService(db)
+    book_service.delete(book_id)

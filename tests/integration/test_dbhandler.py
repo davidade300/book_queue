@@ -1,5 +1,4 @@
-
-from sqlalchemy import Connection, create_engine
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from book_queue.core.database import DBHandler
