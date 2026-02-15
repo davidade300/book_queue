@@ -1,4 +1,3 @@
-import gc
 
 from sqlalchemy import Connection, create_engine
 from sqlalchemy.orm import sessionmaker
@@ -11,7 +10,6 @@ from book_queue.models.models import Base
 def test_dbhandler_creates_and_closes_session():
     engine = create_engine(Settings.TEST_DATABASE_URL)
     Base.metadata.create_all(engine)
-    connection: Connection = engine.connect()
 
     session_factory = sessionmaker(bind=engine)
 
@@ -24,4 +22,3 @@ def test_dbhandler_creates_and_closes_session():
 
     db_session.close()
     db_handler.engine.dispose()
-

@@ -3,7 +3,11 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from book_queue.core.dependencies import get_db
-from book_queue.core.schemas import BookResponse, CreateBookRequest
+from book_queue.core.schemas import (
+    BookResponse,
+    BookResponseList,
+    CreateBookRequest,
+)
 from book_queue.models.models import Book
 from book_queue.services.book_service import BookService
 
@@ -32,3 +36,19 @@ def get_book_by_id(book_id: int, db: Session = Depends(get_db)) -> BookResponse:
     book = book_service.get_by_id(book_id)
 
     return BookResponse.model_validate(book)
+
+
+@router.get(
+    '/list',
+    response_model=BookResponseList,
+    status_code=status.HTTP_200_OK,
+)
+def list_books(db: Session = Depends(get_db)) -> BookResponseList:
+    book_service: BookService = BookService(db)
+    book_list: list[BookResponse] = [
+        BookResponse.model_validate(book) for book in book_service.list_books()
+    ]
+
+    result: BookResponseList = BookResponseList(books=book_list)
+
+    return result

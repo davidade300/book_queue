@@ -81,6 +81,21 @@ def instantiate_models_and_populate_db(
 
 
 @pytest.fixture(scope='function')
+def note_service(db_session: Session) -> NoteService:
+    return NoteService(db=db_session)
+
+
+@pytest.fixture(scope='function')
+def chapter_service(db_session: Session) -> ChapterService:
+    return ChapterService(db=db_session)
+
+
+@pytest.fixture(scope='function')
+def book_service(db_session: Session) -> BookService:
+    return BookService(db=db_session)
+
+
+@pytest.fixture(scope='function')
 def test_client(db_session: Session) -> Generator[TestClient]:
     def override_get_db() -> Generator[Session]:
         try:
