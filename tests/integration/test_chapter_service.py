@@ -62,11 +62,10 @@ def test_get_chapter_by_note_id(
 
     assert chapter_in_db.title == c1.title
 
+
 def test_delete_chapter(chapter_service, instantiate_models_and_populate_db):
-    _, c1,_, _, _ = instantiate_models_and_populate_db
+    _, c1, _, _, _ = instantiate_models_and_populate_db
 
     deleted_chapter: Chapter = chapter_service.delete(c1.id)
 
     assert deleted_chapter is None
-
-

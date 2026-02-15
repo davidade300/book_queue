@@ -43,5 +43,3 @@ class BookService:
 
         self.db.delete(book)
         self.db.commit()
-
-

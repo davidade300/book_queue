@@ -23,7 +23,6 @@ class ChapterService:
 
         return chapter
 
-
     def list_chapters(self) -> list[Chapter]:
         stmt = select(Chapter).order_by(Chapter.created_at.desc())
         chapters: list[Chapter] = list[Chapter](

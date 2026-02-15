@@ -2,11 +2,11 @@ from datetime import datetime
 from typing import Generator
 
 import pytest
-from sqlalchemy import Connection, Engine, StaticPool, create_engine
+from sqlalchemy import Connection, Engine, create_engine
 from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
 
-from book_queue.core.database import get_db
+from book_queue.core.dependencies import get_db
 from book_queue.core.settings import Settings
 from book_queue.main import app
 from book_queue.models.models import Base, Book, Chapter, Note

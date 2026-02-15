@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from starlette import status
 
-from book_queue.core.database import get_db
+from book_queue.core.dependencies import get_db
 from book_queue.core.schemas import BookResponse, CreateBookRequest
 from book_queue.models.models import Book
 from book_queue.services.book_service import BookService
