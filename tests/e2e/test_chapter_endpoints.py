@@ -70,3 +70,23 @@ def test_list_by_book_id(
     assert response.status_code == 200
     assert json_chapters.chapters[0] == ChapterResponse.model_validate(c1)
     assert json_chapters.chapters[1] == ChapterResponse.model_validate(c2)
+
+
+def test_list_all_chapters(
+    test_client,
+    instantiate_models_and_populate_db: tuple[
+        Book, Chapter, Chapter, Note, Note
+    ],
+):
+    _, c1, c2, _, _ = instantiate_models_and_populate_db
+
+    response = test_client.get('/chapters/list/')
+
+    json_chapters: ChapterResponseList = ChapterResponseList.model_validate(
+        response.json()
+    )
+
+    assert response.status_code == 200
+    assert json_chapters.chapters[0] == ChapterResponse.model_validate(c1)
+    assert json_chapters.chapters[1] == ChapterResponse.model_validate(c2)
+
