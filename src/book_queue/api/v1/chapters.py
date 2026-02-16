@@ -86,3 +86,9 @@ def list_chapters(db: Session = Depends(get_db)) -> ChapterResponseList:
     result: ChapterResponseList = ChapterResponseList(chapters=chapter_list)
 
     return result
+
+
+@router.delete("/{chapter_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_chapter(chapter_id:int, db:Session = Depends(get_db)) -> None:
+    chapter_service: ChapterService = ChapterService(db)
+    chapter_service.delete(chapter_id)

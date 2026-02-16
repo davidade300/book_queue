@@ -90,3 +90,11 @@ def test_list_all_chapters(
     assert json_chapters.chapters[0] == ChapterResponse.model_validate(c1)
     assert json_chapters.chapters[1] == ChapterResponse.model_validate(c2)
 
+
+def test_delete_chapter(
+    test_client, db_session: Session, chapter_request: CreateChapterRequest
+):
+    chapter: Chapter = ChapterService(db_session).create(chapter_request)
+    response = test_client.delete(f'/chapters/{chapter.id}')
+
+    assert response.status_code == 204
