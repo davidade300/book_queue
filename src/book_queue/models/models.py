@@ -53,7 +53,7 @@ class Chapter(Base):
         nullable=False,
     )
     summary: Mapped[str] = mapped_column(
-        Text, default='Not finished/ não finalizado'
+        Text, default='Not finished/ nao finalizado'
     )
     book_id: Mapped[int] = mapped_column(
         ForeignKey('books.id'),
