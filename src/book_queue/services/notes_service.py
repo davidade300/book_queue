@@ -7,11 +7,15 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Session
 
-from book_queue.models.models import Chapter, Note
 from book_queue.core.schemas import CreateNoteRequest, UpdateNoteRequest
+from book_queue.models.models import Chapter, Note
 
 
 class NoteService:
+    """
+    This class is a base service for the Note model
+    """
+
     def __init__(self, db: Session):
         self.db = db
 
@@ -38,7 +42,7 @@ class NoteService:
     def get_by_id(self, note_id: int) -> Note:
         """
         return a note by it's id
-        :param note_id: int representin the id of the searched note
+        :param note_id: int representing the id of the searched note
         :return: note:Note
         """
         stmt = select(Note).where(Note.id == note_id)
@@ -73,8 +77,8 @@ class NoteService:
     def delete(self, note_id: int) -> None:
         """
         Delete a note by it's id
-        :param note_id:
-        :return: boolean or raises get_by_id function exception
+        :param note_id: int representing the id of the note to delete
+        :return: None
         """
         note = self.get_by_id(note_id)
 

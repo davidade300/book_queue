@@ -1,3 +1,7 @@
+"""
+this file holds the declarations of dependencies for the fastapi app endpoints
+"""
+
 from typing import Generator
 
 from sqlalchemy.orm import Session
@@ -11,4 +15,8 @@ db_handler = DBHandler(engine, SessionLocal)
 
 
 def get_db() -> Generator[Session]:
+    """
+    get a db session from the db_handler DBHandler class instance
+    :return: yield a database session
+    """
     yield from db_handler.get_session()
