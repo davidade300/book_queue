@@ -7,6 +7,7 @@ from book_queue.core.schemas import (
     ChapterResponse,
     ChapterResponseList,
     CreateChapterRequest,
+    UpdateChapterRequest,
 )
 from book_queue.models.models import Chapter
 from book_queue.services.chapter_service import ChapterService
@@ -88,7 +89,19 @@ def list_chapters(db: Session = Depends(get_db)) -> ChapterResponseList:
     return result
 
 
-@router.delete("/{chapter_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_chapter(chapter_id:int, db:Session = Depends(get_db)) -> None:
+@router.delete('/{chapter_id}', status_code=status.HTTP_204_NO_CONTENT)
+def delete_chapter(chapter_id: int, db: Session = Depends(get_db)) -> None:
     chapter_service: ChapterService = ChapterService(db)
     chapter_service.delete(chapter_id)
+
+
+@router.patch('/{chapter_id}', status_code=status.HTTP_200_OK)
+def update_chapter(
+    chapter_id: int,
+    request: UpdateChapterRequest,
+    db: Session = Depends(get_db),
+) -> ChapterResponse:
+    chapter_service: ChapterService = ChapterService(db)
+    chapter: Chapter = chapter_service.update(chapter_id, request)
+
+    return ChapterResponse.model_validate(chapter)

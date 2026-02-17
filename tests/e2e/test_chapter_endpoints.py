@@ -4,6 +4,7 @@ from book_queue.core.schemas import (
     ChapterResponse,
     ChapterResponseList,
     CreateChapterRequest,
+    UpdateChapterRequest,
 )
 from book_queue.models.models import Book, Chapter, Note
 from book_queue.services.chapter_service import ChapterService
@@ -98,3 +99,26 @@ def test_delete_chapter(
     response = test_client.delete(f'/chapters/{chapter.id}')
 
     assert response.status_code == 204
+
+
+def test_update_chapter(
+    test_client, db_session: Session, chapter_request: CreateChapterRequest
+):
+    chapter_service: ChapterService = ChapterService(db_session)
+    chapter: Chapter = chapter_service.create(chapter_request)
+
+    update_data: UpdateChapterRequest = UpdateChapterRequest(
+        summary='new summary',
+    )
+
+    response = test_client.patch(
+        f'/chapters/{chapter.id}', json=update_data.model_dump(mode='json')
+    )
+
+    updated_chapter: ChapterResponse = ChapterResponse.model_validate(
+        response.json()
+    )
+
+    assert response.status_code == 200
+    assert updated_chapter.id == chapter.id
+    assert updated_chapter == ChapterResponse.model_validate(chapter)

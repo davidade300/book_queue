@@ -2,7 +2,7 @@ from sqlalchemy import Update, insert, select, update
 from sqlalchemy.orm import Session
 
 from book_queue.models.models import Chapter, Note
-from book_queue.core.schemas import CreateChapterRequest
+from book_queue.core.schemas import CreateChapterRequest, UpdateChapterRequest
 
 
 class ChapterService:
@@ -31,7 +31,7 @@ class ChapterService:
 
         return chapters
 
-    def update(self, chapter_id: int, data: CreateChapterRequest) -> Chapter:
+    def update(self, chapter_id: int, data: UpdateChapterRequest) -> Chapter:
         stmt: Update = (
             update(Chapter)
             .where(Chapter.id == chapter_id)
