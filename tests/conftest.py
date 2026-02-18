@@ -7,7 +7,11 @@ from sqlalchemy.orm import Session
 from starlette.testclient import TestClient
 
 from book_queue.core.dependencies import get_db
-from book_queue.core.schemas import CreateBookRequest, CreateChapterRequest
+from book_queue.core.schemas import (
+    CreateBookRequest,
+    CreateChapterRequest,
+    CreateNoteRequest,
+)
 from book_queue.core.settings import Settings
 from book_queue.main import app
 from book_queue.models.models import Base, Book, Chapter, Note
@@ -142,3 +146,20 @@ def chapter_request(
     )
 
     return new_chapter
+
+
+@pytest.fixture(scope='function')
+def note_request(
+    instantiate_models_and_populate_db: tuple[
+        Book, Chapter, Chapter, Note, Note
+    ],
+) -> CreateNoteRequest:
+    _, c, _, n, _ = instantiate_models_and_populate_db
+
+    new_note: CreateNoteRequest = CreateNoteRequest(
+        title='Test Note',
+        content='Test Note Content',
+        chapter_id=c.id,
+    )
+
+    return new_note

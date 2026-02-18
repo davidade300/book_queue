@@ -27,6 +27,14 @@ class UpdateNoteRequest(BaseModel):
     content: str | None = None
 
 
+class NoteResponseList(BaseModel):
+    notes: list[NoteResponse]
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+
+
 class CreateChapterRequest(BaseModel):
     title: str
     summary: str
