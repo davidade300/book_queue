@@ -1,23 +1,24 @@
 # Book Queue
 
-- My aim is for this to be the back-end for an a small blog-like website in which i plan to publish notes on techinical
-  books and topics that i am currently studying.
-- I using TDD for this project, but i will be pragmatic about it(might not have a lot or any unit test, since
-  models are mapped direct to the database.
+- Meu objetivo é que este projeto seja o back-end para um pequeno site estilo blog no qual planejo publicar anotações
+  sobre
+  livros técnicos e tópicos que estou estudando atualmente.
+- Estou usando TDD para este projeto, de forma pragmatica (pode não eu não faça muitos testes unitários,
+  já que os modeloss são acoplados ao banco de dados).
 
-> front-end will be in a separate repo but it will be in react (link will be added later in future)
+> O front-end estará em um repositório separado, mas será em React (link será adicionado posteriormente)
 
-## Project architecture
+## Arquitetura do Projeto
 
-- I'm using a layered architecture during the development of this application, having layers as follows:
-    - Presentation layer -> the api itself;
-    - Business logic layer ->  they are actually in the services;
-    - Data access layer -> the models (which are coupled to the dabatase through the orm);
+- Estou usando uma arquitetura em camadas durante o desenvolvimento desta aplicação, tendo camadas da seguinte forma:
+    - Camada de apresentação -> a API em sí;
+    - Camada de lógica de negócio -> services;
+    - Camada de acesso a dados -> os models (que estão acoplados ao banco de pelo ORM);
 
 ## Stack
 
-- FastAPI for the presentation layer
-- SQLAlchemy for orm mapping;
-- PostgreSQL for the database;
-- Pytest for testing;
-- Alembic for database migrations 
+- FastAPI para a camada de apresentação
+- SQLAlchemy para mapeamento ORM;
+- PostgreSQL para o banco de dados;
+- Pytest para testes;
+- Alembic para migração de bacnos de dados
