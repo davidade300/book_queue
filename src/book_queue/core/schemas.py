@@ -3,6 +3,11 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 
+class CreateUserRequest(BaseModel):
+    username: str
+    password: str
+
+
 class CreateNoteRequest(BaseModel):
     title: str
     content: str

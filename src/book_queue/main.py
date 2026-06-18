@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from book_queue.api.v1 import books, chapters, notes
+from book_queue.api.v1 import books, chapters, notes, auth
 from book_queue.core.database import engine
 from book_queue.models.models import Base
 
@@ -8,7 +8,7 @@ app = FastAPI()
 app.include_router(books.router)
 app.include_router(chapters.router)
 app.include_router(notes.router)
-
+app.include_router(auth.router)
 
 @app.get('/')
 def root():
@@ -16,6 +16,6 @@ def root():
 
 
 @app.get('/before_all')  # Todo: REMOVE THIS BEFORE DEPLOY
-def befora_all():
+def before_all():
     Base.metadata.create_all(engine)
     return {'Tables': 'Created'}

@@ -1,4 +1,6 @@
+from collections.abc import Callable
 from datetime import datetime
+from typing import Self
 
 from sqlalchemy import TIMESTAMP, ForeignKey, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship, DeclarativeBase
@@ -6,6 +8,26 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, DeclarativeBase
 
 class Base(DeclarativeBase):
     pass
+
+
+class User(Base):
+    __tablename__ = 'users'
+    id: Mapped[int] = mapped_column(
+        Integer, primary_key=True, autoincrement=True
+    )
+    username: Mapped[str] = mapped_column(
+        String(255), nullable=False, unique=True
+    )
+    hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+
+    @classmethod
+    def create(
+        cls, username: str, password: str, password_hasher: Callable[[str], str]
+    ) -> Self:
+        return cls(
+            username=username,
+            hashed_password=password_hasher(password),
+        )
 
 
 class Book(Base):

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from book_queue.core.settings import Settings
 
 engine: Engine = create_engine(
-    url=Settings.TEST_DATABASE_URL,
+    url=Settings.DATABASE_URL,
     echo=True,
 )
 
