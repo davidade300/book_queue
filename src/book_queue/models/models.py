@@ -2,7 +2,15 @@ from collections.abc import Callable
 from datetime import datetime
 from typing import Self
 
-from sqlalchemy import TIMESTAMP, ForeignKey, Integer, String, Text, func
+from sqlalchemy import (
+    TIMESTAMP,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    func,
+    Boolean,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship, DeclarativeBase
 
 
@@ -19,6 +27,7 @@ class User(Base):
         String(255), nullable=False, unique=True
     )
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
+    disabled: Mapped[bool] = mapped_column(Boolean, default=True)
 
     @classmethod
     def create(
