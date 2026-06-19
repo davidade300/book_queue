@@ -1,12 +1,10 @@
 from sqlalchemy import (
-    false,
     select,
 )
 from sqlalchemy.orm import Session
 
-from book_queue.core import security
 from book_queue.core.schemas import CreateUserRequest
-from book_queue.core.security import DUMMY_HASH, get_password_hash
+from book_queue.core.security import get_password_hash
 from book_queue.models.models import User
 
 
@@ -22,18 +20,7 @@ class UserService:
         self.db.commit()
         # self.db.refresh(user)
 
-    def get_user(self, username: str) -> User:
+    def get_user(self, username: str) -> User | None:
         stmt = select(User).where(User.username == username)
-        user: User = self.db.execute(stmt).scalar_one()
-
-        return user
-
-    def authenticate_user(self, username: str, password: str):
-
-        user = self.get_user(username)
-        if not user:
-            security.verify_password(password, DUMMY_HASH)
-            return false
-        if not security.verify_password(password, user.hashed_password):
-            return False
+        user: User | None = self.db.execute(stmt).scalar_one_or_none()
         return user

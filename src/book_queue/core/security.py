@@ -1,3 +1,7 @@
+from datetime import timedelta, datetime, timezone
+from typing import Any
+
+import jwt
 from fastapi.security import OAuth2PasswordBearer
 from pwdlib import PasswordHash
 
@@ -16,3 +20,18 @@ def get_password_hash(password: str) -> str:
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return password_hash.verify(plain_password, hashed_password)
+
+
+def create_access_token(
+    data: dict, expires_delta: timedelta | None = None
+) -> str:
+    to_encode: dict[Any, Any] = data.copy()
+    if expires_delta is not None:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+    to_encode.update({'exp': expire})
+
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
