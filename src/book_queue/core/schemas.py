@@ -8,14 +8,19 @@ class CreateUserRequest(BaseModel):
     password: str
 
 
+class TokenData(BaseModel):
+    username: str | None = None
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
 class CreateNoteRequest(BaseModel):
     title: str
     content: str
     chapter_id: int
-
-
-class TokenData(BaseModel):
-    username: str | None = None
 
 
 class NoteResponse(BaseModel):

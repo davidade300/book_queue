@@ -18,7 +18,7 @@ class UserService:
         )
         self.db.add(user)
         self.db.commit()
-        # self.db.refresh(user)
+        self.db.refresh(user)
 
     def get_user(self, username: str) -> User | None:
         stmt = select(User).where(User.username == username)

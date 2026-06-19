@@ -27,7 +27,7 @@ class User(Base):
         String(255), nullable=False, unique=True
     )
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
-    disabled: Mapped[bool] = mapped_column(Boolean, default=True)
+    disabled: Mapped[bool] = mapped_column(Boolean, default=False)
 
     @classmethod
     def create(

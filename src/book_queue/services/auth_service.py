@@ -12,7 +12,7 @@ class AuthService:
 
     def authenticate_user(self, username: str, password: str) -> User | None:
 
-        user: User | None = UserService(self.db).get_user(username)
+        user = UserService(self.db).get_user(username)
         if not user:
             security.verify_password(password, DUMMY_HASH)
             return None
