@@ -5,7 +5,6 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from starlette import status
 
-from book_queue.core import schemas
 from book_queue.core.dependencies import get_current_active_user, get_db
 from book_queue.core.schemas import CreateUserRequest, Token
 from book_queue.core.security import (
@@ -52,7 +51,5 @@ async def login_for_access_token(
 @router.get('/auth/me/')
 async def read_users_me(
     current_user: User = Depends(get_current_active_user),
-) :
+):
     return current_user
-
-

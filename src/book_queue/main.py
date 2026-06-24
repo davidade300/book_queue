@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 
 from book_queue.api.v1 import books, chapters, notes, auth
@@ -19,3 +20,6 @@ def root():
 def before_all():
     Base.metadata.create_all(engine)
     return {'Tables': 'Created'}
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='0.0.0.0', port=8000)

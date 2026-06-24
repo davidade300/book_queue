@@ -22,11 +22,6 @@ class CreateNoteRequest(BaseModel):
     content: str
     chapter_id: int
 
-
-class TokenData(BaseModel):
-    username: str | None = None
-
-
 class NoteResponse(BaseModel):
     id: int
     title: str
